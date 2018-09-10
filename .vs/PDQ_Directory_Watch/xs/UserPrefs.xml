@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{35CF6EA9-761D-4EFF-B261-02EB9C579A10}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="PDQ_Directory_Watch Status">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PDQ_Directory_Watch/Program.cs">
     <Files>
-      <File FileName="PDQ_Directory_Watch/Program.cs" Line="1" Column="1" />
+      <File FileName="PDQ_Directory_Watch/Program.cs" Line="79" Column="44" />
       <File FileName="PDQ_Directory_Watch Status" />
     </Files>
   </MonoDevelop.Ide.Workbench>
@@ -11,5 +11,5 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.PDQ__Directory__Watch PreferredExecutionTarget="MonoDevelop.Default" FirstBuild="True" />
+  <MonoDevelop.Ide.ItemProperties.PDQ__Directory__Watch PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>
