@@ -9,11 +9,11 @@ namespace PDQ_Directory_Watch
 
         public static void Main(string[] args)
         {
-            Directory_Watch watcher = new Directory_Watch("/Users/wesleybook/Desktop/Fall2018/cs425/Homework0");
+            Directory_Watch watcher = new Directory_Watch("/Users/wesleybook/.Trash");
             while(true)
             {
                 watcher.CheckFiles();
-                Thread.Sleep(10000);
+                Thread.Sleep(1);
             }
         }
     }

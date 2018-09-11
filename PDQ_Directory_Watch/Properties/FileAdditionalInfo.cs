@@ -4,7 +4,8 @@ namespace PDQ_Directory_Watch.Properties
     public class FileAdditionalInfo
     {
         public System.IO.FileInfo datafile { get; set; }
-        public int LineCount { get; set; }
+        public int lineCount { get; set; }
+        public bool touched { get; set; }
 
         public FileAdditionalInfo(System.IO.FileInfo f)
         {
@@ -21,12 +22,17 @@ namespace PDQ_Directory_Watch.Properties
                 f.Read(data, 0, (int)f.Length);
                 for (int i = 0; i < data.Length; i++)
                     if (data[i] == '\n')
-                        LineCount++;
+                        lineCount++;
             }
             f.Close();
-            if (LineCount > 0)
-                LineCount++;
+            if (lineCount > 0)
+                lineCount++;
             return;
+        }
+
+        public void SetTouch(bool t)
+        {
+            touched = t;
         }
     }
 }

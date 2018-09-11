@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using PDQ_Directory_Watch.Properties;
 using System.Collections.Generic;
 
@@ -33,10 +35,21 @@ namespace PDQ_Directory_Watch.Properties
         private void InitializeFiles()
         {
             FileInfo[] files = dir.GetFiles();
-            foreach(FileInfo f in files)
+            oldFiles.Capacity = files.Length;
+            Parallel.ForEach(files, (f) =>
             {
                 FileAdditionalInfo faddinfo = new FileAdditionalInfo(f);
+                Thread.BeginCriticalRegion();
                 oldFiles.Add(faddinfo);
+                Thread.EndCriticalRegion();
+            });
+        }
+
+        private void SetBackTouches()
+        {
+            foreach(FileAdditionalInfo f in oldFiles)
+            {
+                f.SetTouch(false);
             }
         }
 
@@ -44,8 +57,11 @@ namespace PDQ_Directory_Watch.Properties
         {
             for (int i = 0; i < oldFiles.Count; i++)
             {
-                if (oldFiles[i].datafile.Name == newfile.Name)
+                if (oldFiles[i].datafile.Name.ToUpper() == newfile.Name.ToUpper())
+                {
+                    oldFiles[i].SetTouch(true);
                     return i;
+                }
             }
             return -1;
         }
@@ -54,29 +70,42 @@ namespace PDQ_Directory_Watch.Properties
         {
             if (dir.Exists)
             {
+                SetBackTouches();
+
                 FileInfo[] newFiles = dir.GetFiles();
 
-                for (int i = 0; i < newFiles.Length; i++)
+                Parallel.ForEach(newFiles, f =>
                 {
-                    int oldFileIndex = GetIndexFromOldFiles(newFiles[i]);
+                    int oldFileIndex = GetIndexFromOldFiles(f);
 
                     //New File
                     if (oldFileIndex == -1)
                     {
-                        Console.WriteLine("New File Created : " + newFiles[i].Name);
-                        FileAdditionalInfo faddinfo = new FileAdditionalInfo(newFiles[i]);
+                        FileAdditionalInfo faddinfo = new FileAdditionalInfo(f);
+                        Console.WriteLine("New File Created : " + faddinfo.datafile.Name + " with " + faddinfo.lineCount + " lines.");
+                        faddinfo.SetTouch(true);
                         oldFiles.Add(faddinfo);
                     }
                     else
                     {
-                        if (oldFiles[oldFileIndex].datafile.LastWriteTime != newFiles[i].LastWriteTime)
+                        if (oldFiles[oldFileIndex].datafile.LastWriteTime != f.LastWriteTime)
                         {
-                            FileAdditionalInfo faddinfo = new FileAdditionalInfo(newFiles[i]);
-                            int lineDiff = faddinfo.LineCount - oldFiles[oldFileIndex].LineCount;
-                            Console.WriteLine("Modified File : " + newFiles[i].Name + ". " + (lineDiff < 0 ? (lineDiff * -1).ToString() + " Lines Remove." : lineDiff.ToString() + " Lines Added."));
+                            FileAdditionalInfo faddinfo = new FileAdditionalInfo(f);
+                            faddinfo.SetTouch(true);
+                            int lineDiff = faddinfo.lineCount - oldFiles[oldFileIndex].lineCount;
+                            Console.WriteLine("Modified File : " + f.Name + ". " + (lineDiff < 0 ? (lineDiff * -1).ToString() + " Lines Remove." : lineDiff.ToString() + " Lines Added."));
                             oldFiles.Remove(oldFiles[oldFileIndex]);
                             oldFiles.Add(faddinfo);
                         }
+                    }
+                });
+
+                for (int i = 0; i < oldFiles.Count; i++)
+                {
+                    if (!oldFiles[i].touched)
+                    {
+                        Console.WriteLine("Deleted File : " + oldFiles[i].datafile.Name);
+                        oldFiles.Remove(oldFiles[i]);
                     }
                 }
             }
