@@ -1,13 +1,22 @@
-﻿<Properties StartupConfiguration="{35CF6EA9-761D-4EFF-B261-02EB9C579A10}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="PDQ_Directory_Watch/Program.cs">
+﻿<Properties StartupConfiguration="{35CF6EA9-761D-4EFF-B261-02EB9C579A10}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PDQ_Directory_Watch/Properties/FileAdditionalInfo.cs">
     <Files>
-      <File FileName="PDQ_Directory_Watch/Program.cs" Line="79" Column="44" />
+      <File FileName="PDQ_Directory_Watch/Program.cs" Line="20" Column="9" />
       <File FileName="PDQ_Directory_Watch Status" />
+      <File FileName="PDQ_Directory_Watch/Properties/Directory_Watch.cs" Line="10" Column="9" />
+      <File FileName="PDQ_Directory_Watch/Properties/FileAdditionalInfo.cs" Line="12" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/wesleybook/Projects/PDQ_Directory_Watch/PDQ_Directory_Watch/Properties/Directory_Watch.cs" relfile="PDQ_Directory_Watch/Properties/Directory_Watch.cs" line="93" column="51" />
+      <Breakpoint file="/Users/wesleybook/Projects/PDQ_Directory_Watch/PDQ_Directory_Watch/Properties/Directory_Watch.cs" relfile="PDQ_Directory_Watch/Properties/Directory_Watch.cs" line="94" column="1" />
+      <Breakpoint file="/Users/wesleybook/Projects/PDQ_Directory_Watch/PDQ_Directory_Watch/Properties/Directory_Watch.cs" relfile="PDQ_Directory_Watch/Properties/Directory_Watch.cs" line="59" column="1" />
+      <Breakpoint file="/Users/wesleybook/Projects/PDQ_Directory_Watch/PDQ_Directory_Watch/Properties/Directory_Watch.cs" relfile="PDQ_Directory_Watch/Properties/Directory_Watch.cs" line="70" column="1" />
+      <Breakpoint file="/Users/wesleybook/Projects/PDQ_Directory_Watch/PDQ_Directory_Watch/Properties/Directory_Watch.cs" relfile="PDQ_Directory_Watch/Properties/Directory_Watch.cs" line="75" column="1" />
+      <Breakpoint file="/Users/wesleybook/Projects/PDQ_Directory_Watch/PDQ_Directory_Watch/Properties/Directory_Watch.cs" relfile="PDQ_Directory_Watch/Properties/Directory_Watch.cs" line="69" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
