@@ -9,12 +9,8 @@ namespace PDQ_Directory_Watch
 
         public static void Main(string[] args)
         {
-            Directory_Watch watcher = new Directory_Watch("/Users/wesleybook/.Trash");
-            while(true)
-            {
-                watcher.CheckFiles();
-                Thread.Sleep(1);
-            }
+            Directory_Watch watcher = new Directory_Watch("/Users/wesleybook/Desktop/Fall2018/vico2561");
+            watcher.Watch();
         }
     }
 }

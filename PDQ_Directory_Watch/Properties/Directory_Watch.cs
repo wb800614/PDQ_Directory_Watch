@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using PDQ_Directory_Watch.Properties;
 using System.Collections.Generic;
 
@@ -61,15 +63,17 @@ namespace PDQ_Directory_Watch.Properties
             return -1;
         }
 
-        public void CheckFiles()
+        private void CheckFiles(object o)
         {
             if (dir.Exists)
             {
                 SetBackTouches();
 
                 FileInfo[] newFiles = dir.GetFiles();
+                List<FileAdditionalInfo> needAdded = new List<FileAdditionalInfo>();
+                List<FileAdditionalInfo> needRemoved = new List<FileAdditionalInfo>();
 
-                for (int i = 0; i < newFiles.Length; i++)
+                Parallel.For(0, newFiles.Length, i =>
                 {
                     int oldFileIndex = GetIndexFromOldFiles(newFiles[i]);
 
@@ -79,7 +83,7 @@ namespace PDQ_Directory_Watch.Properties
                         FileAdditionalInfo faddinfo = new FileAdditionalInfo(newFiles[i]);
                         Console.WriteLine("New File Created : " + faddinfo.datafile.Name + " with " + faddinfo.lineCount + " lines.");
                         faddinfo.SetTouch(true);
-                        oldFiles.Add(faddinfo);
+                        needAdded.Add(faddinfo);
                     }
                     else
                     {
@@ -89,20 +93,34 @@ namespace PDQ_Directory_Watch.Properties
                             faddinfo.SetTouch(true);
                             int lineDiff = faddinfo.lineCount - oldFiles[oldFileIndex].lineCount;
                             Console.WriteLine("Modified File : " + newFiles[i].Name + ". " + (lineDiff < 0 ? (lineDiff * -1).ToString() + " Lines Remove." : lineDiff.ToString() + " Lines Added."));
-                            oldFiles.Remove(oldFiles[oldFileIndex]);
-                            oldFiles.Add(faddinfo);
+                            needRemoved.Add(oldFiles[oldFileIndex]);
+                            needAdded.Add(faddinfo);
                         }
                     }
-                }
-                for (int i = 0; i < oldFiles.Count; i++)
-                {
-                    if (!oldFiles[i].touched)
-                    {
+                });
+
+                Parallel.For(0, oldFiles.Count, i =>
+               {
+                   if (!oldFiles[i].touched)
+                   {
                         Console.WriteLine("Deleted File : " + oldFiles[i].datafile.Name);
-                        oldFiles.Remove(oldFiles[i]);
-                    }
-                }
+                        needRemoved.Add(oldFiles[i]);
+                   }
+               });
+
+                foreach (FileAdditionalInfo f in needRemoved)
+                    oldFiles.Remove(f);
+                foreach (FileAdditionalInfo f in needAdded)
+                    oldFiles.Add(f);
             }
+        }
+
+        public void Watch()
+        {
+            TimerCallback tmCallback = CheckFiles;
+            System.Threading.Timer timer = new System.Threading.Timer(tmCallback, "test", 10000, 10000);
+            Console.WriteLine("Press any key to exit the sample");
+            Console.ReadLine();
         }
     }
 }
